@@ -1,31 +1,19 @@
 package com.sample.app.dao;
 
-import com.sample.app.entity.Player;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import com.sample.app.dao.client.FootballDataHttpClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Repository
 public class FootballDataDao {
 
-  private final RestTemplate restTemplate;
+  private final FootballDataHttpClient httpClient;
 
-  private static final String URL = "https://api.football-data.org/v2/players";
-
-  public FootballDataDao(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
+  public FootballDataDao(FootballDataHttpClient httpClient) {
+    this.httpClient = httpClient;
   }
 
-  public ResponseEntity<Player> getPlayer(String id) {
-    UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(URL).pathSegment(id);
-    HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.set("X-Auth-Token", "36350698d5bf4b41aca0094ddfddffe1");
-    HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
-    return restTemplate.exchange(uriComponentsBuilder.build().toUri(), HttpMethod.GET, httpEntity, Player.class);
+  public ResponseEntity<String> getPlayer(String id) {
+    return httpClient.get("players/" + id, String.class);
   }
 }
