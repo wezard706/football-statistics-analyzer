@@ -15,18 +15,18 @@ public class FootballDataHttpClient {
 
   private final RestTemplate restTemplate;
 
-  private final String baseUri;
-
   private final HttpHeaders httpHeaders;
+
+  private static final String BASE_URL = "https://api.football-data.org/v2/";
 
   public FootballDataHttpClient(RestTemplate restTemplate, String baseUri, HttpHeaders httpHeaders) {
     this.restTemplate = restTemplate;
-    this.baseUri = String.format("https://%s/v2/", baseUri);
     this.httpHeaders = httpHeaders;
   }
 
   public <E> ResponseEntity<E> get(String path, Class<E> responseType) {
-    logger.info("get request: uri=" + baseUri + path);
-    return restTemplate.exchange(baseUri + path, HttpMethod.GET, new HttpEntity<>(httpHeaders), responseType);
+    String url = BASE_URL + path;
+    logger.info("get request: url=" + url);
+    return restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(httpHeaders), responseType);
   }
 }

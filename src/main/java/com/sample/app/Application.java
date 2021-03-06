@@ -44,6 +44,7 @@ public class Application implements CommandLineRunner {
       for (Match match : response.getBody().getMatches()) {
         ZonedDateTime utcDateTime = ZonedDateTime.parse(match.getUtcDate());
         ZonedDateTime tokyoDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Tokyo"));
+
         System.out.println(String.format("%s, %s vs %s", tokyoDateTime, match.getHomeTeam().getName(), match.getAwayTeam().getName()));
       }
     }
