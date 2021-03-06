@@ -1,4 +1,4 @@
-package com.sample.app.dao.enums;
+package com.sample.app.dao.footballdata.enums;
 
 public enum Status {
   SCHEDULED,

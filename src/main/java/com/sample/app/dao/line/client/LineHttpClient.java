@@ -1,4 +1,4 @@
-package com.sample.app.dao.client;
+package com.sample.app.dao.line.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,9 @@ public class LineHttpClient {
     this.httpHeaders = httpHeaders;
   }
 
-  public void post(String path) {
+  public <T> void post(String path, T body) {
     String url = BASE_URL + path;
-    logger.info("get request: url=" + url);
-    restTemplate.exchange(BASE_URL + path, HttpMethod.POST, new HttpEntity<>(httpHeaders), String.class);
+    logger.info("post request: url=" + url);
+    restTemplate.exchange(BASE_URL + path, HttpMethod.POST, new HttpEntity<>(body, httpHeaders), String.class);
   }
 }

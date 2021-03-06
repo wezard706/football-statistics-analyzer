@@ -1,4 +1,4 @@
-package com.sample.app.dao.entity;
+package com.sample.app.dao.footballdata.entity;
 
 import lombok.Getter;
 

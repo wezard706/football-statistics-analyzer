@@ -2,6 +2,7 @@ package com.sample.app.dao
 
 import com.sample.app.Application
 import com.sample.app.dao.client.FootballDataHttpClient
+import com.sample.app.dao.footballdata.FootballDataDao
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer

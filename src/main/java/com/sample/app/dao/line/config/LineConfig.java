@@ -1,6 +1,6 @@
-package com.sample.app;
+package com.sample.app.dao.line.config;
 
-import com.sample.app.dao.client.LineHttpClient;
+import com.sample.app.dao.line.client.LineHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class LineConfig {
 
-  @Value("channel-access-token")
+  @Value("${line.channel-access-token}")
   private String channelAccessToken;
 
   @Bean
