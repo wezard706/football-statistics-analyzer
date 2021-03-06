@@ -1,4 +1,4 @@
-package com.sample.app.dao.filter;
+package com.sample.app.dao.footballdata.filter;
 
 import org.springframework.util.StringUtils;
 

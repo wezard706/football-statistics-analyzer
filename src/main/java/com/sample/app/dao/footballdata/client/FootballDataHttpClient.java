@@ -1,4 +1,4 @@
-package com.sample.app.dao.client;
+package com.sample.app.dao.footballdata.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class FootballDataHttpClient {
 
   private static final String BASE_URL = "https://api.football-data.org/v2/";
 
-  public FootballDataHttpClient(RestTemplate restTemplate, String baseUri, HttpHeaders httpHeaders) {
+  public FootballDataHttpClient(RestTemplate restTemplate, HttpHeaders httpHeaders) {
     this.restTemplate = restTemplate;
     this.httpHeaders = httpHeaders;
   }

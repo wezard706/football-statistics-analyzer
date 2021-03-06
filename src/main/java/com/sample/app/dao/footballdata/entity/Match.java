@@ -1,6 +1,6 @@
-package com.sample.app.dao.entity;
+package com.sample.app.dao.footballdata.entity;
 
-import com.sample.app.dao.enums.Status;
+import com.sample.app.dao.footballdata.enums.Status;
 import lombok.Getter;
 
 import javax.validation.Valid;

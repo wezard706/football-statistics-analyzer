@@ -1,8 +1,8 @@
-package com.sample.app.dao;
+package com.sample.app.dao.footballdata;
 
-import com.sample.app.dao.client.FootballDataHttpClient;
-import com.sample.app.dao.entity.GetMatchesResponse;
-import com.sample.app.dao.filter.MatchFilter;
+import com.sample.app.dao.footballdata.client.FootballDataHttpClient;
+import com.sample.app.dao.footballdata.entity.GetMatchesResponse;
+import com.sample.app.dao.footballdata.filter.MatchFilter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
