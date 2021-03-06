@@ -39,7 +39,7 @@ public class FootballService {
     for (Match match : upcomingMatches) {
       ZonedDateTime utcDateTime = ZonedDateTime.parse(match.getUtcDate());
       ZonedDateTime tokyoDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Tokyo"));
-      sb.append(String.format("%s, %s vs %s", tokyoDateTime, match.getHomeTeam().getName(), match.getAwayTeam().getName()));
+      sb.append(String.format("%s, %s vs %s\n", tokyoDateTime.toLocalDateTime(), match.getHomeTeam().getName(), match.getAwayTeam().getName()));
     }
 
     List<PushMessageBody.Message> messages = new ArrayList<>();
