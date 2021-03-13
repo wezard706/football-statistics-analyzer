@@ -1,28 +1,31 @@
 package com.sample.app.dao.footballdata;
 
 import com.sample.app.dao.footballdata.client.FootballDataHttpClient;
+import com.sample.app.dao.footballdata.entity.FootballDataGetMatchesDto;
 import com.sample.app.dao.footballdata.entity.GetMatchesResponse;
-import com.sample.app.dao.footballdata.filter.MatchFilter;
+import com.sample.app.dao.footballdata.entity.MatchFilter;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public class FootballDataDao {
 
   private final FootballDataHttpClient httpClient;
 
-  public FootballDataDao(FootballDataHttpClient httpClient) {
+  private final String apiToken;
+
+  public FootballDataDao(FootballDataHttpClient httpClient, String apiToken) {
     this.httpClient = httpClient;
+    this.apiToken = apiToken;
   }
 
-  public ResponseEntity<String> getPlayer(int playerId) {
-    return httpClient.get("players/" + playerId, String.class);
-  }
-
-  public ResponseEntity<GetMatchesResponse> getMatches(int competitionId, MatchFilter matchFilter) {
-    String queryString = Optional.ofNullable(matchFilter).map(MatchFilter::toQueryString).orElse("");
-    return httpClient.get("competitions/" + competitionId + "/matches" + queryString, GetMatchesResponse.class);
+  public ResponseEntity<GetMatchesResponse> getMatches(FootballDataGetMatchesDto footballDataGetMatchesDto) {
+    String queryString = Optional.ofNullable(footballDataGetMatchesDto.getMatchFilter()).map(MatchFilter::toQueryString).orElse("");
+    String path = "competitions/" + footballDataGetMatchesDto.getCompetitionId() + "/matches" + queryString;
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.set("X-Auth-Token", apiToken);
+    return httpClient.get(path, new HttpEntity<>(httpHeaders), GetMatchesResponse.class);
   }
 }

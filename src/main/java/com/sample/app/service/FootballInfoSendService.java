@@ -1,9 +1,10 @@
 package com.sample.app.service;
 
+import com.sample.app.dao.footballdata.entity.FootballDataGetMatchesDto;
 import com.sample.app.dao.footballdata.entity.Match;
-import com.sample.app.dao.footballdata.filter.MatchFilter;
+import com.sample.app.dao.footballdata.entity.MatchFilter;
 import com.sample.app.dao.line.LineDao;
-import com.sample.app.dao.line.entity.PushMessageBody;
+import com.sample.app.dao.line.entity.LinePushMessageDto;
 import com.sample.app.dao.line.enums.MessageType;
 
 import java.time.LocalDate;
@@ -31,12 +32,14 @@ public class FootballInfoSendService {
     // プレミアリーグの直近予定の試合を取得
     LocalDate dateFrom = LocalDate.now();
     MatchFilter matchFilter = new MatchFilter.Builder().dateFrom(dateFrom).dateTo(dateFrom.plusDays(7)).build();
-    List<Match> upcomingMatches = footballDataService.getMatches(2021, matchFilter);
+    FootballDataGetMatchesDto footballDataGetMatchesDto = new FootballDataGetMatchesDto(2021, matchFilter);
+    List<Match> upcomingMatches = footballDataService.getMatches(footballDataGetMatchesDto);
 
     // Lineに送信
-    List<PushMessageBody.Message> messages = new ArrayList<>();
-    messages.add(new PushMessageBody.Message(MessageType.TEXT, makeMessage(upcomingMatches)));
-    lineDao.pushMessage(new PushMessageBody(userId, messages));
+    List<LinePushMessageDto.Message> messages = new ArrayList<>();
+    messages.add(new LinePushMessageDto.Message(MessageType.TEXT, makeMessage(upcomingMatches)));
+    LinePushMessageDto linePushMessageDto = new LinePushMessageDto(userId, messages);
+    lineDao.pushMessage(linePushMessageDto);
   }
 
   private String makeMessage(List<Match> matches) {

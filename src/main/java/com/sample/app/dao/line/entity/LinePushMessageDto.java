@@ -6,13 +6,13 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class PushMessageBody {
+public class LinePushMessageDto {
 
   private String to;
 
   private List<Message> messages;
 
-  public PushMessageBody(String to, List<Message> messages) {
+  public LinePushMessageDto(String to, List<Message> messages) {
     this.to = to;
     this.messages = messages;
   }
