@@ -1,5 +1,6 @@
 package com.sample.app.dao.line.entity;
 
+import com.sample.app.dao.line.enums.MessageType;
 import lombok.Getter;
 
 import java.util.List;
@@ -19,13 +20,17 @@ public class PushMessageBody {
   @Getter
   public static class Message {
 
-    public Message(String type, String text) {
+    private MessageType type;
+
+    private String text;
+
+    public Message(MessageType type, String text) {
       this.type = type;
       this.text = text;
     }
 
-    private String type;
-
-    private String text;
+    public String getType() {
+      return this.type.getValue();
+    }
   }
 }

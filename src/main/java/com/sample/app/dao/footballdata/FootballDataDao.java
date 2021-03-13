@@ -5,7 +5,6 @@ import com.sample.app.dao.footballdata.entity.GetMatchesResponse;
 import com.sample.app.dao.footballdata.filter.MatchFilter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -18,17 +17,11 @@ public class FootballDataDao {
     this.httpClient = httpClient;
   }
 
-  public ResponseEntity<String> getPlayer(String playerId) {
-    if (StringUtils.isEmpty(playerId)) {
-      throw new NullPointerException("actual playerId=" + playerId);
-    }
+  public ResponseEntity<String> getPlayer(int playerId) {
     return httpClient.get("players/" + playerId, String.class);
   }
 
-  public ResponseEntity<GetMatchesResponse> getMatches(String competitionId, MatchFilter matchFilter) {
-    if (StringUtils.isEmpty(competitionId)) {
-      throw new NullPointerException("actual competitionId=" + competitionId);
-    }
+  public ResponseEntity<GetMatchesResponse> getMatches(int competitionId, MatchFilter matchFilter) {
     String queryString = Optional.ofNullable(matchFilter).map(MatchFilter::toQueryString).orElse("");
     return httpClient.get("competitions/" + competitionId + "/matches" + queryString, GetMatchesResponse.class);
   }

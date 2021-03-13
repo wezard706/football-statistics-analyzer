@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 public class Match {
@@ -16,7 +19,7 @@ public class Match {
   private Season season;
 
   @NotNull
-  private String utcDate;
+  private LocalDateTime utcDate;
 
   @NotNull
   private Status status;
@@ -86,5 +89,9 @@ public class Match {
 
       private Integer awayTeam;
     }
+  }
+
+  private void setUtcDate(String strUtcDate) {
+    this.utcDate = ZonedDateTime.parse(strUtcDate).withZoneSameInstant(ZoneId.of("Asia/Tokyo")).toLocalDateTime();
   }
 }

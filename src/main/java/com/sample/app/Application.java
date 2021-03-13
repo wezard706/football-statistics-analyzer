@@ -1,6 +1,6 @@
 package com.sample.app;
 
-import com.sample.app.service.FootballService;
+import com.sample.app.service.FootballInfoSendService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-  private final FootballService footballService;
+  private final FootballInfoSendService footballInfoSendService;
 
-  Application(FootballService footballService) {
-    this.footballService = footballService;
+  Application(FootballInfoSendService footballInfoSendService) {
+    this.footballInfoSendService = footballInfoSendService;
   }
 
   public static void main(String[] args) {
@@ -20,6 +20,6 @@ public class Application implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    footballService.sendUpcomingMatchesToLine();
+    footballInfoSendService.sendUpcomingMatches();
   }
 }

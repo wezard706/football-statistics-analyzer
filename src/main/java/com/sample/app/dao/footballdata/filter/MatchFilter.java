@@ -2,11 +2,15 @@ package com.sample.app.dao.footballdata.filter;
 
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+
 public class MatchFilter {
 
-  private String dateFrom;
+  private LocalDate dateFrom;
 
-  private String dateTo;
+  private LocalDate dateTo;
 
   private String stage;
 
@@ -17,6 +21,8 @@ public class MatchFilter {
   private String group;
 
   private String season;
+
+  private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   private MatchFilter(Builder builder) {
     this.dateFrom = builder.dateFrom;
@@ -30,11 +36,11 @@ public class MatchFilter {
 
   public String toQueryString() {
     StringBuilder sb = new StringBuilder();
-    if (!StringUtils.isEmpty(dateFrom)) {
-      addQuerySet("dateFrom", dateFrom, sb);
+    if (Objects.nonNull(dateFrom)) {
+      addQuerySet("dateFrom", dateFrom.format(dateTimeFormatter), sb);
     }
-    if (!StringUtils.isEmpty(dateTo)) {
-      addQuerySet("dateTo", dateTo, sb);
+    if (Objects.nonNull(dateTo)) {
+      addQuerySet("dateTo", dateTo.format(dateTimeFormatter), sb);
     }
     if (!StringUtils.isEmpty(stage)) {
       addQuerySet("stage", stage, sb);
@@ -64,20 +70,20 @@ public class MatchFilter {
   }
 
   public static class Builder {
-    private String dateFrom;
-    private String dateTo;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private String stage;
     private String status;
     private String matchDay;
     private String group;
     private String season;
 
-    public Builder dateFrom(String dateFrom) {
+    public Builder dateFrom(LocalDate dateFrom) {
       this.dateFrom = dateFrom;
       return this;
     }
 
-    public Builder dateTo(String dateTo) {
+    public Builder dateTo(LocalDate dateTo) {
       this.dateTo = dateTo;
       return this;
     }
