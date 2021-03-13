@@ -1,6 +1,7 @@
 package com.sample.app.dao.footballdata.filter
 
 import com.sample.app.Application
+import com.sample.app.dao.footballdata.entity.MatchFilter
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

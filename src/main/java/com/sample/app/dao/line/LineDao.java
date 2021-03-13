@@ -1,19 +1,25 @@
 package com.sample.app.dao.line;
 
 import com.sample.app.dao.line.client.LineHttpClient;
-import com.sample.app.dao.line.entity.PushMessageBody;
-import org.springframework.stereotype.Repository;
+import com.sample.app.dao.line.entity.LinePushMessageDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 
-@Repository
 public class LineDao {
 
   private final LineHttpClient lineHttpClient;
 
-  public LineDao(LineHttpClient lineHttpClient) {
+  private final String channelAccessToken;
+
+  public LineDao(LineHttpClient lineHttpClient, String channelAccessToken) {
     this.lineHttpClient = lineHttpClient;
+    this.channelAccessToken = channelAccessToken;
   }
 
-  public void pushMessage(PushMessageBody pushMessageBody) {
-    this.lineHttpClient.post("bot/message/push", pushMessageBody);
+  public void pushMessage(LinePushMessageDto body) {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.set("Content-Type", "application/json");
+    httpHeaders.set("Authorization", "Bearer " + channelAccessToken);
+    lineHttpClient.post("bot/message/push", new HttpEntity<>(body, httpHeaders));
   }
 }
