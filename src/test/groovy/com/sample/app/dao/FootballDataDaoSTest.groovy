@@ -19,41 +19,6 @@ class FootballDataDaoSTest extends Specification {
   @SpringBean
   private FootballDataHttpClient footballDataHttpClient = Mock()
 
-  def "getPlayer"() {
-    setup:
-    def playerId = "44"
-    1 * footballDataHttpClient.get(_ as String, _ as Class<Object>) >> {
-      def args1 = it.get(0)
-      args1 == "players/" + playerId
-      def args2 = it.get(1)
-      args2 == String.class
-      return
-    }
-
-    when:
-    target.getPlayer(playerId)
-
-    then:
-    notThrown(Exception)
-  }
-
-  @Unroll
-  def "getPlayer NG(#testCase)"() {
-    setup:
-    0 * footballDataHttpClient.get(_ as String, _ as Class<Object>)
-
-    when:
-    target.getPlayer(playerId)
-
-    then:
-    thrown(NullPointerException)
-
-    where:
-    testCase         | playerId
-    "playerId=empty" | ""
-    "playerId=null"  | null
-  }
-
   @Unroll
   def "getMatches"() {
     // FIXME 実装する

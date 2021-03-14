@@ -7,6 +7,8 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.time.LocalDate
+
 @ContextConfiguration(initializers = ConfigFileApplicationContextInitializer, classes = [Application])
 class MatchFilterSTest extends Specification {
 
@@ -31,14 +33,14 @@ class MatchFilterSTest extends Specification {
   }
 
   def oneFilter() {
-    return new MatchFilter.Builder().dateFrom("2020-01-01").build()
+    return new MatchFilter.Builder().dateFrom(LocalDate.of(2020, 1, 1)).build()
   }
 
   def twoFilter() {
-    return new MatchFilter.Builder().dateFrom("2020-01-01").dateTo("2020-01-01").build()
+    return new MatchFilter.Builder().dateFrom(LocalDate.of(2020, 1, 1)).dateTo(LocalDate.of(2020, 1, 1)).build()
   }
 
   def allFilter() {
-    return new MatchFilter.Builder().dateFrom("2020-01-01").dateTo("2020-01-01").stage("REGULAR_SEASON").status("FINISHED").matchDay("21").group("Regular Season").season("2020").build()
+    return new MatchFilter.Builder().dateFrom(LocalDate.of(2020, 1, 1)).dateTo(LocalDate.of(2020, 1, 1)).stage("REGULAR_SEASON").status("FINISHED").matchDay("21").group("Regular Season").season("2020").build()
   }
 }

@@ -1,5 +1,6 @@
 package com.sample.app.service;
 
+import com.sample.app.dao.footballdata.FootballDataDao;
 import com.sample.app.dao.footballdata.entity.FootballDataGetMatchesDto;
 import com.sample.app.dao.footballdata.entity.Match;
 import com.sample.app.dao.footballdata.entity.MatchFilter;
@@ -16,14 +17,14 @@ import java.util.List;
  */
 public class FootballInfoSendService {
 
-  private final FootballDataService footballDataService;
+  private final FootballDataDao footballDataDao;
 
   private final LineDao lineDao;
 
   private final String userId;
 
-  public FootballInfoSendService(FootballDataService footballDataService, LineDao lineDao, String userId) {
-    this.footballDataService = footballDataService;
+  public FootballInfoSendService(FootballDataDao footballDataDao, LineDao lineDao, String userId) {
+    this.footballDataDao = footballDataDao;
     this.lineDao = lineDao;
     this.userId = userId;
   }
@@ -33,11 +34,13 @@ public class FootballInfoSendService {
     LocalDate dateFrom = LocalDate.now();
     MatchFilter matchFilter = new MatchFilter.Builder().dateFrom(dateFrom).dateTo(dateFrom.plusDays(7)).build();
     FootballDataGetMatchesDto footballDataGetMatchesDto = new FootballDataGetMatchesDto(2021, matchFilter);
-    List<Match> upcomingMatches = footballDataService.getMatches(footballDataGetMatchesDto);
+    List<Match> upcomingMatches = footballDataDao.getMatches(footballDataGetMatchesDto);
+
+    String message = makeMessage(upcomingMatches);
 
     // Lineに送信
     List<LinePushMessageDto.Message> messages = new ArrayList<>();
-    messages.add(new LinePushMessageDto.Message(MessageType.TEXT, makeMessage(upcomingMatches)));
+    messages.add(new LinePushMessageDto.Message(MessageType.TEXT, message));
     LinePushMessageDto linePushMessageDto = new LinePushMessageDto(userId, messages);
     lineDao.pushMessage(linePushMessageDto);
   }
