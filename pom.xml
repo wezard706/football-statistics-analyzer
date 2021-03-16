@@ -55,6 +55,11 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.amazonaws.serverless</groupId>
+      <artifactId>aws-serverless-java-container-springboot2</artifactId>
+      <version>1.5</version>
+    </dependency>
     <!-- for test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -114,6 +119,60 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+      <!-- AWS Lambda のランタイムは Java11 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+
+      <!-- Spring Boot2のJarはBOOT-INF下にアプリケーションのクラスファイルを配置する。 AWS Lambda はこの構造に対応していないため、Jar直下にクラスファイルを移動する -->
+      <!-- 1. maven-dependency-plugin: target/libに依存パッケージをコピー
+           2. maven-assembly-plugin: アプリケーションのクラスファイルをJar直下、依存パッケージをJarのlib下に配置。
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>zip-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>${project.artifactId}-${project.version}</finalName>
+              <descriptors>
+                <descriptor>src${file.separator}assembly${file.separator}bin.xml</descriptor>
+              </descriptors>
+              <attach>false</attach>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
 
