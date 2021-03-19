@@ -9,8 +9,8 @@
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <maven.compiler.source>14</maven.compiler.source>
-    <maven.compiler.target>14</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <gmaven.version>1.5</gmaven.version>
     <jackson.version>2.11.2</jackson.version>
     <groovy.version>2.5.12</groovy.version>
@@ -26,15 +26,11 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -56,9 +52,9 @@
       <artifactId>lombok</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.amazonaws.serverless</groupId>
-      <artifactId>aws-serverless-java-container-springboot2</artifactId>
-      <version>1.5</version>
+      <groupId>com.linecorp.bot</groupId>
+      <artifactId>line-bot-spring-boot</artifactId>
+      <version>4.3.0</version>
     </dependency>
     <!-- for test -->
     <dependency>
@@ -119,60 +115,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-      <!-- AWS Lambda のランタイムは Java11 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <source>11</source>
-          <target>11</target>
-        </configuration>
-      </plugin>
-
-      <!-- Spring Boot2のJarはBOOT-INF下にアプリケーションのクラスファイルを配置する。 AWS Lambda はこの構造に対応していないため、Jar直下にクラスファイルを移動する -->
-      <!-- 1. maven-dependency-plugin: target/libに依存パッケージをコピー
-           2. maven-assembly-plugin: アプリケーションのクラスファイルをJar直下、依存パッケージをJarのlib下に配置。
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.1.1</version>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/lib</outputDirectory>
-              <includeScope>runtime</includeScope>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <id>zip-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <finalName>${project.artifactId}-${project.version}</finalName>
-              <descriptors>
-                <descriptor>src${file.separator}assembly${file.separator}bin.xml</descriptor>
-              </descriptors>
-              <attach>false</attach>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
 
