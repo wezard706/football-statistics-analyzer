@@ -32,7 +32,7 @@ public class Application {
     System.out.println("userId=" + userId);
     footballInfoSendService.sendUpcomingMatches(userId);
     final String originalMessageText = event.getMessage().getText();
-    return new TextMessage(originalMessageText);
+    return new TextMessage(originalMessageText + "...");
   }
 
   @EventMapping
