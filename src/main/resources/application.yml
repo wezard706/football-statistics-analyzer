@@ -1,0 +1,11 @@
+football-data:
+  api-token: ${API_TOKEN}
+
+line:
+  channel-access-token: ${CHANNEL_ACCESS_TOKEN}
+  user-id: ${USER_ID}
+
+line.bot:
+  channel-token: ${CHANNEL_TOKEN}
+  channel-secret: ${CHANNEL_SECRET}
+  handler.path: /callback
