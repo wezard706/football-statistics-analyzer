@@ -45,6 +45,22 @@ public class FootballInfoSendService {
     lineDao.pushMessage(linePushMessageDto);
   }
 
+  public void sendUpcomingMatches(String userId) {
+    // プレミアリーグの直近予定の試合を取得
+    LocalDate dateFrom = LocalDate.now();
+    MatchFilter matchFilter = new MatchFilter.Builder().dateFrom(dateFrom).dateTo(dateFrom.plusDays(7)).build();
+    FootballDataGetMatchesDto footballDataGetMatchesDto = new FootballDataGetMatchesDto(2021, matchFilter);
+    List<Match> upcomingMatches = footballDataDao.getMatches(footballDataGetMatchesDto);
+
+    String message = makeMessage(upcomingMatches);
+
+    // Lineに送信
+    List<LinePushMessageDto.Message> messages = new ArrayList<>();
+    messages.add(new LinePushMessageDto.Message(MessageType.TEXT, message));
+    LinePushMessageDto linePushMessageDto = new LinePushMessageDto(userId, messages);
+    lineDao.pushMessage(linePushMessageDto);
+  }
+
   private String makeMessage(List<Match> matches) {
     StringBuilder sb = new StringBuilder();
     for (Match match : matches) {
